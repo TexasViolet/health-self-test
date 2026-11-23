@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="健康状况自测 · 千问优化版：以《伤寒论》提纲为基础，2～3 题出结果。">
+<title>健康状况自测 · 千问优化版</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IuWBpeW6t+iHqua1iyI+CiAgPGRlZnM+CiAgICA8Y2xpcFBhdGggaWQ9InJvdW5kZWQiPgogICAgICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgcnk9IjExMiIvPgogICAgPC9jbGlwUGF0aD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIHJ5PSIxMTIiIGZpbGw9IiNGRjhDMzEiLz4KICA8ZyBjbGlwLXBhdGg9InVybCgjcm91bmRlZCkiPgogICAgPHJlY3QgeD0iMzAiIHk9IjMwIiB3aWR0aD0iNDUyIiBoZWlnaHQ9IjQ1MiIgcng9IjgyIiByeT0iODIiCiAgICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZBRUUiIHN0cm9rZS13aWR0aD0iOSIvPgogICAgPGcgZmlsbD0iI0ZGRkFFRSIKICAgICAgIGZvbnQtZmFtaWx5PSInU29uZ3RpIFNDJywnU1RTb25nJywnTm90byBTZXJpZiBTQycsJ1NpbVN1bicsc2VyaWYiCiAgICAgICBmb250LXNpemU9IjE3NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+CiAgICAgIDx0ZXh0IHg9IjEyOCIgeT0iMTI4IiBkeT0iLjM2ZW0iPuWBpTwvdGV4dD4KICAgICAgPHRleHQgeD0iMzg0IiB5PSIxMjgiIGR5PSIuMzZlbSI+5bq3PC90ZXh0PgogICAgICA8dGV4dCB4PSIxMjgiIHk9IjM4NCIgZHk9Ii4zNmVtIj7oh6o8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjM4NCIgeT0iMzg0IiBkeT0iLjM2ZW0iPua1izwvdGV4dD4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=">
+<meta name="theme-color" content="#FF8C31">
+<style>
+:root {
+  --paper: #F7F3E8; --ink: #2B2A26; --ink-2: #6B665C;
+  --indigo: #3E5C58; --indigo-deep: #2F4744;
+  --cinnabar: #A63A2E; --line: #D9D2C2; --card: #FFFDF6;
+  --radius: 14px;
+  --serif: "Songti SC", "STSong", "Noto Serif SC", "SimSun", serif;
+  --sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--sans); font-size: 17px; line-height: 1.8; color: var(--ink); background: var(--paper); min-height: 100dvh; }
+.app { max-width: 560px; margin: 0 auto; padding: 28px 22px calc(28px + env(safe-area-inset-bottom)); min-height: 100dvh; display: flex; flex-direction: column; }
+.progress-bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 26px; }
+.progress-fill { height: 100%; background: var(--indigo); border-radius: 3px; transition: width .25s ease; }
+.screen { flex: 1; display: none; flex-direction: column; animation: fadein .25s ease; }
+.screen.active { display: flex; }
+@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.start-hero { text-align: center; padding: 48px 0 24px; }
+.seal { display: inline-block; font-family: var(--serif); color: var(--cinnabar); border: 2px solid var(--cinnabar); border-radius: 6px; padding: 2px 10px; font-size: 13px; letter-spacing: .35em; margin-bottom: 20px; }
+.start-hero h1 { font-family: var(--serif); font-size: 34px; line-height: 1.3; }
+.start-hero .sub { color: var(--ink-2); font-size: 15px; margin-top: 10px; }
+.notice { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--indigo); border-radius: var(--radius); padding: 18px 20px; margin: 16px 0 28px; }
+.notice li { list-style: none; font-size: 15px; color: var(--ink-2); padding-left: 1.4em; position: relative; }
+.notice li::before { content: "·"; position: absolute; left: .4em; color: var(--indigo); font-weight: 700; }
+fieldset { border: none; }
+legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.q-title { font-family: var(--serif); font-size: 27px; line-height: 1.5; margin: 4px 0 24px; }
+.opt { display: block; margin-bottom: 16px; cursor: pointer; }
+.opt input { position: absolute; opacity: 0; }
+.opt-card { display: block; background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 16px 20px; min-height: 52px; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+.opt-label { display: block; font-size: 17px; }
+.opt:hover .opt-card { border-color: var(--indigo); transform: scale(1.02); }
+.opt:active .opt-card { transform: scale(.98); }
+.opt input:focus-visible + .opt-card { outline: 3px solid var(--indigo); outline-offset: 2px; }
+.opt input:checked + .opt-card { border-color: var(--indigo); background: #EEF3F0; box-shadow: inset 0 0 0 1px var(--indigo); }
+.opt input:checked + .opt-card .opt-label::before { content: "✓ "; color: var(--indigo); font-weight: 700; }
+.opt.danger .opt-card { border-color: #E0B4AE; background: #FBF1EE; }
+.opt.danger .opt-label { color: var(--cinnabar); }
+.opt.danger:hover .opt-card { border-color: var(--cinnabar); }
+.btn { display: inline-block; border: none; border-radius: var(--radius); cursor: pointer; font-family: var(--sans); font-size: 17px; padding: 15px 36px; min-height: 50px; background: var(--indigo); color: #fff; transition: transform .2s ease, background .2s ease; }
+.btn:hover { background: var(--indigo-deep); transform: scale(1.02); }
+.btn:active { transform: scale(.98); }
+.btn:focus-visible { outline: 3px solid var(--indigo); outline-offset: 2px; }
+.btn.ghost { background: transparent; color: var(--indigo); border: 2px solid var(--indigo); }
+.btn-row { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+.btn-back { align-self: flex-start; background: none; border: none; color: var(--ink-2); font-size: 15px; cursor: pointer; padding: 8px 4px; margin-bottom: 8px; min-height: 44px; }
+.btn-back:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; border-radius: 4px; }
+.result-head { text-align: center; margin: 14px 0 8px; }
+.result-tag { display: inline-block; font-family: var(--serif); font-size: 13px; color: var(--indigo); border: 1.5px solid var(--indigo); border-radius: 999px; padding: 2px 14px; letter-spacing: .2em; margin-bottom: 14px; }
+.result-head h2 { font-family: var(--serif); font-size: 33px; line-height: 1.4; }
+.result-head .plain { display: block; font-size: 17px; color: var(--ink-2); font-family: var(--sans); margin-top: 6px; letter-spacing: 0; }
+.oneline { text-align: center; color: var(--ink-2); margin: 10px 0 22px; }
+.rblock { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; }
+.rblock h3 { font-size: 15px; color: var(--indigo); margin-bottom: 8px; font-weight: 600; letter-spacing: .05em; }
+.rblock.danger-block { border-left: 4px solid var(--cinnabar); }
+.rblock.danger-block h3 { color: var(--cinnabar); }
+.quote { font-family: var(--serif); font-size: 19px; line-height: 2; }
+.quote-cite { display: block; font-family: var(--sans); font-size: 13px; color: var(--ink-2); margin-top: 8px; text-align: right; }
+.rblock p, .rblock li { font-size: 15px; }
+.rblock ul { padding-left: 1.2em; }
+.echo-list { list-style: none; }
+.echo-list li { padding-left: 1.4em; position: relative; margin-bottom: 2px; }
+.echo-list li::before { content: "✓"; position: absolute; left: 0; color: var(--indigo); font-weight: 700; }
+details.fold { margin-bottom: 14px; }
+details.fold summary { list-style: none; cursor: pointer; font-size: 15px; color: var(--indigo); background: var(--card); border: 1px dashed var(--indigo); border-radius: var(--radius); padding: 13px 20px; min-height: 48px; display: flex; align-items: center; gap: 8px; }
+details.fold summary::-webkit-details-marker { display: none; }
+details.fold summary::before { content: "▸"; transition: transform .2s ease; }
+details.fold[open] summary::before { transform: rotate(90deg); }
+details.fold summary:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+details.fold .fold-body { border: 1px solid var(--line); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 16px 20px; margin-top: -6px; background: var(--card); }
+.fold-note { font-size: 13px; color: var(--cinnabar); margin-top: 10px; }
+.disclaimer { font-size: 13px; color: var(--ink-2); line-height: 1.7; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 20px; }
+.red-page .result-tag { color: var(--cinnabar); border-color: var(--cinnabar); }
+.red-page h2 { color: var(--cinnabar); }
+@media (min-width: 768px) { .start-hero { padding-top: 64px; } .q-title { font-size: 30px; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="progress-bar" id="progress-wrap" aria-hidden="true" style="display:none"><div class="progress-fill" id="progress-fill"></div></div>
+  <main id="stage" aria-live="polite">
+
+    <!-- 启动页 -->
+    <section class="screen" id="scr-start" data-screen="start">
+      <div class="start-hero">
+        <span class="seal">科普演示</span>
+        <h1>健康状况自测</h1>
+        <p class="sub">以中医经典为基础 · 取材《伤寒论》提纲</p>
+      </div>
+      <div class="notice">
+        <ul>
+          <li>2～3 个问题，约 1 分钟出结果</li>
+          <li>经典原文＋白话，一次自测＝一次经典科普</li>
+          <li>即开即用，无需注册登录</li>
+        </ul>
+      </div>
+      <div class="btn-row">
+        <button class="btn" data-go="q1">开始自测</button>
+      </div>
+    </section>
+
+    <!-- Q1 -->
+    <section class="screen" id="scr-q1" data-screen="q1">
+      <button class="btn-back" data-back>‹ 上一页</button>
+      <fieldset>
+        <legend>第一题</legend>
+        <h2 class="q-title">最近最明显的不舒服是？</h2>
+        <label class="opt"><input type="radio" name="q1" value="a" data-next="q2">
+          <span class="opt-card"><span class="opt-label">怕冷、头颈发紧疼痛</span></span></label>
+        <label class="opt"><input type="radio" name="q1" value="b" data-next="r-shaoyang">
+          <span class="opt-card"><span class="opt-label">口苦、咽干、头晕</span></span></label>
+        <label class="opt"><input type="radio" name="q1" value="c" data-next="r-taiyin">
+          <span class="opt-card"><span class="opt-label">肚子胀、吃不下、拉肚子</span></span></label>
+        <label class="opt"><input type="radio" name="q1" value="d" data-next="r-none">
+          <span class="opt-card"><span class="opt-label">以上都不太像</span></span></label>
+        <label class="opt danger"><input type="radio" name="q1" value="e" data-next="r-red">
+          <span class="opt-card"><span class="opt-label">⚠ 高热不退、剧烈疼痛、出血、意识不清</span></span></label>
+      </fieldset>
+    </section>
+
+    <!-- Q2 -->
+    <section class="screen" id="scr-q2" data-screen="q2">
+      <button class="btn-back" data-back>‹ 上一题</button>
+      <fieldset>
+        <legend>第二题</legend>
+        <h2 class="q-title">出汗的情况更接近？</h2>
+        <label class="opt"><input type="radio" name="q2" value="a" data-next="r-zhongfeng">
+          <span class="opt-card"><span class="opt-label">有出汗、怕风</span></span></label>
+        <label class="opt"><input type="radio" name="q2" value="b" data-next="r-shanghan">
+          <span class="opt-card"><span class="opt-label">不出汗、身上酸痛、怕冷更重</span></span></label>
+        <label class="opt"><input type="radio" name="q2" value="c" data-next="q3">
+          <span class="opt-card"><span class="opt-label">说不清，时有时无</span></span></label>
+      </fieldset>
+    </section>
+
+    <!-- Q3 -->
+    <section class="screen" id="scr-q3" data-screen="q3">
+      <button class="btn-back" data-back>‹ 上一题</button>
+      <fieldset>
+        <legend>第三题</legend>
+        <h2 class="q-title">最突出的感受是？</h2>
+        <label class="opt"><input type="radio" name="q3" value="a" data-next="r-shaoyang">
+          <span class="opt-card"><span class="opt-label">口苦、咽干、头晕</span></span></label>
+        <label class="opt"><input type="radio" name="q3" value="b" data-next="r-zhongfeng">
+          <span class="opt-card"><span class="opt-label">出汗、怕风</span></span></label>
+        <label class="opt"><input type="radio" name="q3" value="c" data-next="r-shanghan">
+          <span class="opt-card"><span class="opt-label">怕冷、无汗、身上酸痛</span></span></label>
+        <label class="opt"><input type="radio" name="q3" value="d" data-next="r-none">
+          <span class="opt-card"><span class="opt-label">以上都不太像</span></span></label>
+      </fieldset>
+    </section>
+
+    <!-- 结果：太阳中风 -->
+    <section class="screen" id="scr-r-zhongfeng" data-screen="r-zhongfeng" data-result>
+      <div class="result-head">
+        <span class="result-tag">状态归类</span>
+        <h2>太阳病 · 中风方向<span class="plain">受风着凉类</span></h2>
+      </div>
+      <p class="oneline">体表受风，汗出而怕风。</p>
+      <div class="rblock">
+        <h3>经典依据</h3>
+        <blockquote class="quote">「太阳病，发热，汗出，恶风，脉缓者，名为中风。」
+          <cite class="quote-cite">——《伤寒论》第 2 条</cite></blockquote>
+        <p style="margin-top:8px">发热不高、自然出汗、怕风——古人把这类体表受风命名为「中风」，与今天的脑血管「中风」不是一回事。</p>
+      </div>
+      <div class="rblock">
+        <h3>你的选择</h3>
+        <ul class="echo-list" id="echo-r-zhongfeng"></ul>
+      </div>
+      <div class="rblock">
+        <h3>建议</h3>
+        <ul>
+          <li>避风保暖，充分休息，适量温水</li>
+          <li>发热持续、汗多乏力或数日不缓解，请就医</li>
+        </ul>
+      </div>
+      <details class="fold">
+        <summary>经典原文延展（含方名）</summary>
+        <div class="fold-body">
+          <blockquote class="quote" style="font-size:16px">「太阳中风，阳浮而阴弱……啬啬恶寒，淅淅恶风，翕翕发热，鼻鸣干呕者，桂枝汤主之。」
+            <cite class="quote-cite">——《伤寒论》第 12 条（节引）</cite></blockquote>
+          <p class="fold-note">※ 经典原文学术引用，展示条文完整语境；如需用药请咨询执业中医师。</p>
+        </div>
+      </details>
+      <div class="disclaimer">结果为经典条文的科普归类（宋本《伤寒论》条文号）；如有不适持续或加重，请及时就医。</div>
+      <div class="btn-row"><button class="btn ghost" data-restart>重新自测</button></div>
+    </section>
+
+    <!-- 结果：太阳伤寒 -->
+    <section class="screen" id="scr-r-shanghan" data-screen="r-shanghan" data-result>
+      <div class="result-head">
+        <span class="result-tag">状态归类</span>
+        <h2>太阳病 · 伤寒方向<span class="plain">受寒束表类</span></h2>
+      </div>
+      <p class="oneline">寒邪束表，无汗而怕冷。</p>
+      <div class="rblock">
+        <h3>经典依据</h3>
+        <blockquote class="quote">「太阳病，或已发热，或未发热，必恶寒，体痛，呕逆，脉阴阳俱紧者，名为伤寒。」
+          <cite class="quote-cite">——《伤寒论》第 3 条</cite></blockquote>
+        <p style="margin-top:8px">一定怕冷、身体疼痛、可能恶心——古人把这类体表受寒命名为「伤寒」，与现代「伤寒杆菌感染」不是一回事。</p>
+      </div>
+      <div class="rblock">
+        <h3>你的选择</h3>
+        <ul class="echo-list" id="echo-r-shanghan"></ul>
+      </div>
+      <div class="rblock">
+        <h3>建议</h3>
+        <ul>
+          <li>保暖休息，温水热饮，观察体温</li>
+          <li>高热不退、胸闷气促，请立即就医</li>
+        </ul>
+      </div>
+      <details class="fold">
+        <summary>经典原文延展（含方名）</summary>
+        <div class="fold-body">
+          <blockquote class="quote" style="font-size:16px">「太阳病，头痛发热，身疼腰痛，骨节疼痛，恶风，无汗而喘者，麻黄汤主之。」
+            <cite class="quote-cite">——《伤寒论》第 35 条</cite></blockquote>
+          <p class="fold-note">※ 经典原文学术引用，展示条文完整语境；如需用药请咨询执业中医师。</p>
+        </div>
+      </details>
+      <div class="disclaimer">结果为经典条文的科普归类（宋本《伤寒论》条文号）；如有不适持续或加重，请及时就医。</div>
+      <div class="btn-row"><button class="btn ghost" data-restart>重新自测</button></div>
+    </section>
+
+    <!-- 结果：少阳 -->
+    <section class="screen" id="scr-r-shaoyang" data-screen="r-shaoyang" data-result>
+      <div class="result-head">
+        <span class="result-tag">状态归类</span>
+        <h2>少阳病方向<span class="plain">半表半里类</span></h2>
+      </div>
+      <p class="oneline">邪在表里之间，口苦、咽干、目眩。</p>
+      <div class="rblock">
+        <h3>经典依据</h3>
+        <blockquote class="quote">「少阳之为病，口苦，咽干，目眩也。」
+          <cite class="quote-cite">——《伤寒论》第 263 条</cite></blockquote>
+        <p style="margin-top:8px">少阳是表里之间的「半表半里」地带，三条提纲症状都很日常，是识别少阳病的钥匙。</p>
+      </div>
+      <div class="rblock">
+        <h3>你的选择</h3>
+        <ul class="echo-list" id="echo-r-shaoyang"></ul>
+      </div>
+      <div class="rblock">
+        <h3>建议</h3>
+        <ul>
+          <li>清淡饮食，少油腻、酒与熬夜</li>
+          <li>症状持续数日或出现「一阵冷一阵热」，请就医</li>
+        </ul>
+      </div>
+      <details class="fold">
+        <summary>经典原文延展（含方名）</summary>
+        <div class="fold-body">
+          <blockquote class="quote" style="font-size:16px">「伤寒五六日中风，往来寒热，胸胁苦满，嘿嘿不欲饮食，心烦喜呕，……小柴胡汤主之。」
+            <cite class="quote-cite">——《伤寒论》第 96 条（节引）</cite></blockquote>
+          <p class="fold-note">※ 经典原文学术引用，展示条文完整语境；如需用药请咨询执业中医师。</p>
+        </div>
+      </details>
+      <div class="disclaimer">结果为经典条文的科普归类（宋本《伤寒论》条文号）；如有不适持续或加重，请及时就医。</div>
+      <div class="btn-row"><button class="btn ghost" data-restart>重新自测</button></div>
+    </section>
+
+    <!-- 结果：太阴 -->
+    <section class="screen" id="scr-r-taiyin" data-screen="r-taiyin" data-result>
+      <div class="result-head">
+        <span class="result-tag">状态归类</span>
+        <h2>太阴病 · 脾胃方向<span class="plain">脾胃虚寒类</span></h2>
+      </div>
+      <p class="oneline">病入于里，脾胃虚寒，腹胀、食不下、腹泻。</p>
+      <div class="rblock">
+        <h3>经典依据</h3>
+        <blockquote class="quote">「太阴之为病，腹满而吐，食不下，自利益甚，时腹自痛。」
+          <cite class="quote-cite">——《伤寒论》第 273 条</cite></blockquote>
+        <p style="margin-top:8px">肚子胀满、呕吐、吃不下饭，腹泻往往日渐加重、腹部时不时隐隐作痛——太阴是「脾寒」层，与少阳的半表半里不同。</p>
+      </div>
+      <div class="rblock">
+        <h3>你的选择</h3>
+        <ul class="echo-list" id="echo-r-taiyin"></ul>
+      </div>
+      <div class="rblock">
+        <h3>建议</h3>
+        <ul>
+          <li>饮食温软易消化，少生冷油腻；腹部保暖</li>
+          <li>腹泻加重、呕吐不止或脱水，请就医</li>
+        </ul>
+      </div>
+      <details class="fold">
+        <summary>经典原文延展（含方名）</summary>
+        <div class="fold-body">
+          <blockquote class="quote" style="font-size:16px">「自利不渴者，属太阴，以其脏有寒故也，当温之，宜服四逆辈。」
+            <cite class="quote-cite">——《伤寒论》第 277 条</cite></blockquote>
+          <p class="fold-note">※ 经典原文学术引用，展示条文完整语境；如需用药请咨询执业中医师。</p>
+        </div>
+      </details>
+      <div class="disclaimer">结果为经典条文的科普归类（宋本《伤寒论》条文号）；如有不适持续或加重，请及时就医。</div>
+      <div class="btn-row"><button class="btn ghost" data-restart>重新自测</button></div>
+    </section>
+
+    <!-- 兜底 -->
+    <section class="screen" id="scr-r-none" data-screen="r-none" data-result>
+      <div class="result-head">
+        <span class="result-tag">自测结论</span>
+        <h2>未匹配到相近的经典状态归类<span class="plain">演示版覆盖范围有限</span></h2>
+      </div>
+      <p class="oneline">经典条文有明确的边界——没对上，就不硬套。</p>
+      <div class="rblock">
+        <h3>说明</h3>
+        <p>演示版仅覆盖《伤寒论》太阳（中风／伤寒）、少阳、太阴的提纲证型。你的情况可能属于其他经证或杂病范畴。</p>
+      </div>
+      <div class="rblock">
+        <h3>你的选择</h3>
+        <ul class="echo-list" id="echo-r-none"></ul>
+      </div>
+      <div class="rblock">
+        <h3>建议</h3>
+        <ul>
+          <li>不适持续或加重，请咨询专业医师</li>
+          <li>正式版将扩充条目库，欢迎再来自测</li>
+        </ul>
+      </div>
+      <div class="disclaimer">结果为经典条文的科普归类（宋本《伤寒论》条文号）；如有不适持续或加重，请及时就医。</div>
+      <div class="btn-row"><button class="btn ghost" data-restart>重新自测</button></div>
+    </section>
+
+    <!-- 红旗 -->
+    <section class="screen red-page" id="scr-r-red" data-screen="r-red" data-result>
+      <div class="result-head">
+        <span class="result-tag">请优先就医</span>
+        <h2>你描述的情况需要尽快处理<span class="plain">请前往医院急诊或拨打 120</span></h2>
+      </div>
+      <div class="rblock danger-block">
+        <h3>现在应该做的</h3>
+        <ul>
+          <li>尽快前往医院急诊，或拨打 120</li>
+          <li>告知身边人你的情况</li>
+          <li>以医疗机构意见为准</li>
+        </ul>
+      </div>
+      <div class="disclaimer">急重情况请以医疗机构意见为准。</div>
+      <div class="btn-row"><button class="btn ghost" data-restart>重新自测</button></div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var screens = document.querySelectorAll(".screen");
+  var progressWrap = document.getElementById("progress-wrap");
+  var progressFill = document.getElementById("progress-fill");
+  var PROGRESS = { start: 0, q1: 1, q2: 2, q3: 3, r: 3 };
+  var history = [], answers = [], current = "start";
+
+  function show(id) {
+    current = id;
+    var i;
+    for (i = 0; i < screens.length; i++) {
+      screens[i].classList.toggle("active", screens[i].getAttribute("data-screen") === id);
+    }
+    if (id === "start") {
+      progressWrap.style.display = "none";
+    } else {
+      progressWrap.style.display = "block";
+      var n = PROGRESS[id] !== undefined ? PROGRESS[id] : PROGRESS.r;
+      progressFill.style.width = (id.indexOf("r-") === 0 ? 100 : n / 3 * 100) + "%";
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function renderEcho(screenId) {
+    var ul = document.getElementById("echo-" + screenId);
+    if (!ul) return;
+    ul.innerHTML = "";
+    var i;
+    for (i = 0; i < answers.length; i++) {
+      var li = document.createElement("li");
+      li.textContent = answers[i].label;
+      ul.appendChild(li);
+    }
+  }
+
+  document.querySelectorAll('.opt input[type="radio"]').forEach(function (input) {
+    input.addEventListener("change", function () {
+      var next = input.getAttribute("data-next");
+      var section = input.closest("section");
+      var screenId = section.getAttribute("data-screen");
+      var label = input.closest(".opt").querySelector(".opt-label").textContent;
+      if (screenId === "q1") { history = []; answers = []; }
+      if (screenId.indexOf("q") === 0 && screenId !== "start") {
+        history.push(screenId);
+        answers.push({ q: screenId, label: label });
+      }
+      renderEcho(next);
+      show(next);
+    });
+  });
+
+  document.querySelectorAll("[data-go]").forEach(function (btn) {
+    btn.addEventListener("click", function () { show(btn.getAttribute("data-go")); });
+  });
+
+  document.querySelectorAll("[data-back]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var prev = history.pop();
+      if (prev) {
+        answers.pop();
+        var sec = document.getElementById("scr-" + prev);
+        if (sec) { sec.querySelectorAll("input[type=radio]").forEach(function (r) { r.checked = false; }); }
+        show(prev);
+      } else {
+        show("start");
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-restart]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      history = []; answers = [];
+      document.querySelectorAll('.opt input[type="radio"]').forEach(function (r) { r.checked = false; });
+      show("start");
+    });
+  });
+
+  show("start");
+})();
+</script>
+</body>
+</html>
